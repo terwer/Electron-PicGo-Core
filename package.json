@@ -1,5 +1,5 @@
 {
-  "name": "picgo",
+  "name": "electron-picgo",
   "version": "1.5.0",
   "description": "A tool for picture uploading",
   "main": "dist/index.cjs.js",
@@ -117,7 +117,8 @@
     "qiniu": "^7.2.1",
     "resolve": "^1.8.1",
     "rimraf": "^3.0.2",
-    "tunnel": "^0.0.6"
+    "tunnel": "^0.0.6",
+    "upyun": "^3.4.6"
   },
   "repository": {
     "type": "git",
