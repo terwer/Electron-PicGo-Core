@@ -1,8 +1,11 @@
-import { IPicGo, IPluginConfig, IAliyunConfig, IOldReqOptionsWithFullResponse } from '../../types'
+import {IAliyunConfig, IOldReqOptionsWithFullResponse, IPicGo, IPluginConfig} from '../../types'
 import crypto from 'crypto'
 import mime from 'mime-types'
-import { IBuildInEvent } from '../../utils/enum'
-import { ILocalesKey } from '../../i18n/zh-CN'
+import {IBuildInEvent} from '../../utils/enum'
+import {ILocalesKey} from '../../i18n/zh-CN'
+// @ts-expect-error
+import OSS from 'ali-oss'
+import {Readable} from 'stream'
 
 // generate OSS signature
 const generateSignature = (options: IAliyunConfig, fileName: string): string => {
@@ -31,7 +34,7 @@ const postOptions = (options: IAliyunConfig, fileName: string, signature: string
   }
 }
 
-const handle = async (ctx: IPicGo): Promise<IPicGo> => {
+const handleRest = async (ctx: IPicGo): Promise<IPicGo> => {
   const aliYunOptions = ctx.getConfig<IAliyunConfig>('picBed.aliyun')
   if (!aliYunOptions) {
     throw new Error('Can\'t find aliYun OSS config')
@@ -73,13 +76,76 @@ const handle = async (ctx: IPicGo): Promise<IPicGo> => {
   }
 }
 
+const handle = async (ctx: IPicGo): Promise<IPicGo> => {
+  if (!ctx) {
+    await handleRest(ctx)
+  }
+
+  console.warn('Using stream mode for aliyun upload, added by terwer, see https://github.com/terwer/Electron-PicGo-Core/blob/dev/src/plugins/uploader/aliyun.ts#L76')
+  const aliYunOptions = ctx.getConfig<IAliyunConfig>('picBed.aliyun')
+  if (!aliYunOptions) {
+    throw new Error('Can\'t find aliYun OSS config')
+  }
+  try {
+    const store = new OSS({
+      region: aliYunOptions.area,
+      accessKeyId: aliYunOptions.accessKeyId,
+      accessKeySecret: aliYunOptions.accessKeySecret,
+      bucket: aliYunOptions.bucket
+    })
+
+    const imgList = ctx.output
+    const customUrl = aliYunOptions.customUrl
+    const path = aliYunOptions.path
+
+    for (const img of imgList) {
+      if (img.fileName && img.buffer) {
+        let image = img.buffer
+        if (!image && img.base64Image) {
+          image = Buffer.from(img.base64Image, 'base64')
+        }
+
+        const optionUrl = aliYunOptions.options || ''
+        const remotePath = `${path}${img.fileName}${optionUrl}`
+        const stream = Readable.from(image)
+        // console.log('Before upload,remotePath=>', remotePath)
+        // console.log('Before upload,stream=>', stream)
+
+        const result = await store.putStream(remotePath, stream)
+        console.log('Using aliyun SDK for upload add by terwer, result=>', result)
+
+        if (result?.res?.status && result.res.status === 200) {
+          delete img.base64Image
+          delete img.buffer
+          if (customUrl) {
+            img.imgUrl = `${customUrl}/${path}${img.fileName}${optionUrl}`
+          } else {
+            img.imgUrl = `https://${aliYunOptions.bucket}.${aliYunOptions.area}.aliyuncs.com/${path}${img.fileName}${optionUrl}`
+          }
+        } else {
+          throw new Error('Upload failed')
+        }
+      }
+    }
+    return ctx
+  } catch (err) {
+    ctx.emit(IBuildInEvent.NOTIFICATION, {
+      title: ctx.i18n.translate<ILocalesKey>('UPLOAD_FAILED'),
+      body: ctx.i18n.translate<ILocalesKey>('CHECK_SETTINGS')
+    })
+    throw err
+  }
+}
+
 const config = (ctx: IPicGo): IPluginConfig[] => {
   const userConfig = ctx.getConfig<IAliyunConfig>('picBed.aliyun') || {}
   const config: IPluginConfig[] = [
     {
       name: 'accessKeyId',
       type: 'input',
-      get alias () { return ctx.i18n.translate<ILocalesKey>('PICBED_ALICLOUD_ACCESSKEYID') },
+      get alias() {
+        return ctx.i18n.translate<ILocalesKey>('PICBED_ALICLOUD_ACCESSKEYID')
+      },
       default: userConfig.accessKeyId || '',
       required: true
     },
