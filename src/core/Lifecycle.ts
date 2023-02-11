@@ -74,14 +74,14 @@ export class Lifecycle extends EventEmitter {
   }
 
   private async doUpload (ctx: IPicGo): Promise<IPicGo> {
-    let type = ctx.getConfig<Undefinable<string>>('picBed.uploader') || ctx.getConfig<Undefinable<string>>('picBed.current') || 'smms'
+    let type = ctx.getConfig<Undefinable<string>>('picBed.uploader') || ctx.getConfig<Undefinable<string>>('picBed.current') || 'github'
     let uploader = ctx.helper.uploader.get(type)
     let currentTransformer = type
     if (!uploader) {
-      type = 'smms'
-      currentTransformer = 'smms'
-      uploader = ctx.helper.uploader.get('smms')
-      ctx.log.warn(`Can't find uploader - ${type}, switch to default uploader - smms`)
+      type = 'github'
+      currentTransformer = 'github'
+      uploader = ctx.helper.uploader.get('github')
+      ctx.log.warn(`Can't find uploader - ${type}, switch to default uploader - github`)
     }
     ctx.log.info(`Uploading... Current uploader is [${currentTransformer}]`)
     await uploader?.handle(ctx)

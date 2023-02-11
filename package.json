@@ -127,7 +127,7 @@
     "url": "git+https://github.com/PicGo/PicGo-Core.git"
   },
   "picBed": {
-    "current": "smms"
+    "current": "github"
   },
   "plugins": {},
   "engines": {
