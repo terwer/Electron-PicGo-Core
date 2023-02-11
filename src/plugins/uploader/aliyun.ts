@@ -1,11 +1,11 @@
-import {IAliyunConfig, IOldReqOptionsWithFullResponse, IPicGo, IPluginConfig} from '../../types'
+import { IAliyunConfig, IOldReqOptionsWithFullResponse, IPicGo, IPluginConfig } from '../../types'
 import crypto from 'crypto'
 import mime from 'mime-types'
-import {IBuildInEvent} from '../../utils/enum'
-import {ILocalesKey} from '../../i18n/zh-CN'
+import { IBuildInEvent } from '../../utils/enum'
+import { ILocalesKey } from '../../i18n/zh-CN'
 // @ts-expect-error
 import OSS from 'ali-oss'
-import {Readable} from 'stream'
+import { Readable } from 'stream'
 import streamUtils from '../../utils/streamUtils'
 
 // generate OSS signature
@@ -144,7 +144,7 @@ const config = (ctx: IPicGo): IPluginConfig[] => {
     {
       name: 'accessKeyId',
       type: 'input',
-      get alias() {
+      get alias () {
         return ctx.i18n.translate<ILocalesKey>('PICBED_ALICLOUD_ACCESSKEYID')
       },
       default: userConfig.accessKeyId || '',

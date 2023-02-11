@@ -1,13 +1,13 @@
-import {IOldReqOptionsWithFullResponse, IPicGo, IPluginConfig, IUpyunConfig} from '../../types'
+import { IOldReqOptionsWithFullResponse, IPicGo, IPluginConfig, IUpyunConfig } from '../../types'
 import crypto from 'crypto'
 import MD5 from 'md5'
-import {IBuildInEvent} from '../../utils/enum'
-import {ILocalesKey} from '../../i18n/zh-CN'
-import {safeParse} from '../../utils/common'
+import { IBuildInEvent } from '../../utils/enum'
+import { ILocalesKey } from '../../i18n/zh-CN'
+import { safeParse } from '../../utils/common'
 import mime from 'mime-types'
 // @ts-expect-error
 import upyun from 'upyun'
-import {Readable} from 'stream'
+import { Readable } from 'stream'
 import streamUtils from '../../utils/streamUtils'
 
 // generate COS signature string
@@ -161,7 +161,7 @@ const config = (ctx: IPicGo): IPluginConfig[] => {
     {
       name: 'bucket',
       type: 'input',
-      get alias() {
+      get alias () {
         return ctx.i18n.translate<ILocalesKey>('PICBED_UPYUN_BUCKET')
       },
       default: userConfig.bucket || '',
@@ -170,13 +170,13 @@ const config = (ctx: IPicGo): IPluginConfig[] => {
     {
       name: 'operator',
       type: 'input',
-      get alias() {
+      get alias () {
         return ctx.i18n.translate<ILocalesKey>('PICBED_UPYUN_OPERATOR')
       },
-      get prefix() {
+      get prefix () {
         return ctx.i18n.translate<ILocalesKey>('PICBED_UPYUN_OPERATOR')
       },
-      get message() {
+      get message () {
         return ctx.i18n.translate<ILocalesKey>('PICBED_UPYUN_MESSAGE_OPERATOR')
       },
       default: userConfig.operator || '',
@@ -185,13 +185,13 @@ const config = (ctx: IPicGo): IPluginConfig[] => {
     {
       name: 'password',
       type: 'password',
-      get prefix() {
+      get prefix () {
         return ctx.i18n.translate<ILocalesKey>('PICBED_UPYUN_MESSAGE_PASSWORD')
       },
-      get alias() {
+      get alias () {
         return ctx.i18n.translate<ILocalesKey>('PICBED_UPYUN_PASSWORD')
       },
-      get message() {
+      get message () {
         return ctx.i18n.translate<ILocalesKey>('PICBED_UPYUN_MESSAGE_PASSWORD')
       },
       default: userConfig.password || '',
@@ -200,10 +200,10 @@ const config = (ctx: IPicGo): IPluginConfig[] => {
     {
       name: 'url',
       type: 'input',
-      get alias() {
+      get alias () {
         return ctx.i18n.translate<ILocalesKey>('PICBED_UPYUN_URL')
       },
-      get message() {
+      get message () {
         return ctx.i18n.translate<ILocalesKey>('PICBED_UPYUN_MESSAGE_URL')
       },
       default: userConfig.url || '',
@@ -212,13 +212,13 @@ const config = (ctx: IPicGo): IPluginConfig[] => {
     {
       name: 'options',
       type: 'input',
-      get prefix() {
+      get prefix () {
         return ctx.i18n.translate<ILocalesKey>('PICBED_UPYUN_OPTIONS')
       },
-      get alias() {
+      get alias () {
         return ctx.i18n.translate<ILocalesKey>('PICBED_UPYUN_OPTIONS')
       },
-      get message() {
+      get message () {
         return ctx.i18n.translate<ILocalesKey>('PICBED_UPYUN_MESSAGE_OPTIONS')
       },
       default: userConfig.options || '',
@@ -227,13 +227,13 @@ const config = (ctx: IPicGo): IPluginConfig[] => {
     {
       name: 'path',
       type: 'input',
-      get prefix() {
+      get prefix () {
         return ctx.i18n.translate<ILocalesKey>('PICBED_UPYUN_PATH')
       },
-      get alias() {
+      get alias () {
         return ctx.i18n.translate<ILocalesKey>('PICBED_UPYUN_PATH')
       },
-      get message() {
+      get message () {
         return ctx.i18n.translate<ILocalesKey>('PICBED_UPYUN_MESSAGE_PATH')
       },
       default: userConfig.path || '',
@@ -245,7 +245,7 @@ const config = (ctx: IPicGo): IPluginConfig[] => {
 
 export default function register (ctx: IPicGo): void {
   ctx.helper.uploader.register('upyun', {
-    get name() {
+    get name () {
       return ctx.i18n.translate<ILocalesKey>('PICBED_UPYUN')
     },
     handle,
