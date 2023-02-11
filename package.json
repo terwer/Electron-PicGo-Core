@@ -96,6 +96,7 @@
     "@picgo/i18n": "^1.0.0",
     "@picgo/store": "^2.0.2",
     "ali-oss": "^6.17.1",
+    "arraybuffer-to-buffer": "^0.0.7",
     "axios": "^0.27.2",
     "chalk": "^2.4.1",
     "commander": "^8.1.0",

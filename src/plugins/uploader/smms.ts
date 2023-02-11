@@ -1,25 +1,23 @@
-import { IPicGo, IPluginConfig, ISmmsConfig, IOldReqOptions } from '../../types'
-import { IBuildInEvent } from '../../utils/enum'
-import { ILocalesKey } from '../../i18n/zh-CN'
+import {IOldReqOptions, IPicGo, IPluginConfig, ISmmsConfig} from '../../types'
+import {IBuildInEvent} from '../../utils/enum'
+import {ILocalesKey} from '../../i18n/zh-CN'
+import {Readable} from 'stream'
 
 const postOptions = (fileName: string, image: Buffer, apiToken: string, backupDomain = ''): IOldReqOptions => {
   const domain = backupDomain || 'sm.ms'
+    console.log('fileName=>', fileName)
   return {
     method: 'POST',
     url: `https://${domain}/api/v2/upload`,
     headers: {
       contentType: 'multipart/form-data',
-      'User-Agent': 'PicGo',
+        // 'User-Agent': 'PicGo',
       Authorization: apiToken
     },
     formData: {
-      smfile: {
-        value: image,
-        options: {
-          filename: fileName
-        }
-      },
-      ssl: 'true'
+        smfile: Readable.from(image),
+        ssl: 1,
+        format: 'json'
     }
   }
 }

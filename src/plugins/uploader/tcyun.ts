@@ -1,8 +1,8 @@
 import crypto from 'crypto'
 import mime from 'mime-types'
-import { IPicGo, IPluginConfig, ITcyunConfig, IOldReqOptionsWithFullResponse } from '../../types'
-import { IBuildInEvent } from '../../utils/enum'
-import { ILocalesKey } from '../../i18n/zh-CN'
+import {IOldReqOptionsWithFullResponse, IPicGo, IPluginConfig, ITcyunConfig} from '../../types'
+import {IBuildInEvent} from '../../utils/enum'
+import {ILocalesKey} from '../../i18n/zh-CN'
 
 // generate COS signature string
 
@@ -57,7 +57,8 @@ const postOptions = (options: ITcyunConfig, fileName: string, signature: ISignat
       method: 'POST',
       url: `http://${area}.file.myqcloud.com/files/v2/${signature.appId}/${signature.bucket}/${encodeURI(path)}${fileName}`,
       headers: {
-        Host: `${area}.file.myqcloud.com`,
+        // unsafe
+        // Host: `${area}.file.myqcloud.com`,
         Authorization: signature.signature,
         contentType: 'multipart/form-data',
         userAgent: `PicGo;${version};null;null`
@@ -73,7 +74,7 @@ const postOptions = (options: ITcyunConfig, fileName: string, signature: ISignat
       method: 'PUT',
       url: `http://${options.bucket}.cos.${options.area}.myqcloud.com/${encodeURIComponent(path)}${encodeURIComponent(fileName)}`,
       headers: {
-        Host: `${options.bucket}.cos.${options.area}.myqcloud.com`,
+        // Host: `${options.bucket}.cos.${options.area}.myqcloud.com`,
         Authorization: `q-sign-algorithm=sha1&q-ak=${options.secretId}&q-sign-time=${signature.signTime}&q-key-time=${signature.signTime}&q-header-list=host&q-url-param-list=&q-signature=${signature.signature}`,
         contentType: mime.lookup(fileName),
         userAgent: `PicGo;${version};null;null`

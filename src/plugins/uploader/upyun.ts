@@ -8,6 +8,7 @@ import mime from 'mime-types'
 // @ts-expect-error
 import upyun from 'upyun'
 import {Readable} from 'stream'
+import streamUtils from '../../utils/streamUtils'
 
 // generate COS signature string
 const generateSignature = (options: IUpyunConfig, fileName: string): string => {
@@ -109,7 +110,7 @@ const handle = async (ctx: IPicGo): Promise<IPicGo> => {
     const imgList = ctx.output
     for (const img of imgList) {
       if (img.fileName && img.buffer) {
-        let image = img.buffer
+        let image = streamUtils.readBuffer(img.buffer)
         if (!image && img.base64Image) {
           image = Buffer.from(img.base64Image, 'base64')
         }

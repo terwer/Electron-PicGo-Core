@@ -6,6 +6,7 @@ import {ILocalesKey} from '../../i18n/zh-CN'
 // @ts-expect-error
 import OSS from 'ali-oss'
 import {Readable} from 'stream'
+import streamUtils from '../../utils/streamUtils'
 
 // generate OSS signature
 const generateSignature = (options: IAliyunConfig, fileName: string): string => {
@@ -100,7 +101,7 @@ const handle = async (ctx: IPicGo): Promise<IPicGo> => {
 
     for (const img of imgList) {
       if (img.fileName && img.buffer) {
-        let image = img.buffer
+        let image = streamUtils.readBuffer(img.buffer)
         if (!image && img.base64Image) {
           image = Buffer.from(img.base64Image, 'base64')
         }
