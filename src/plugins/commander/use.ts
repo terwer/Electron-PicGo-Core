@@ -19,7 +19,7 @@ const use: IPlugin = {
                 name: 'uploader',
                 message: 'Use an uploader',
                 choices: ctx.helper.uploader.getIdList(),
-                default: ctx.getConfig('picBed.uploader') || ctx.getConfig('picBed.current') || 'smms'
+                default: ctx.getConfig('picBed.uploader') || ctx.getConfig('picBed.current') || 'github'
               },
               transformer: {
                 type: 'list',
