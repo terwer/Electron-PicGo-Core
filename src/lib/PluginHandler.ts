@@ -45,6 +45,7 @@ export class PluginHandler implements IPluginHandler {
       // 1. install remote pacage
       // 2. install local pacage
       const result = await this.execCommand('install', fullNameList, this.ctx.baseDir, options, env)
+      console.log('execCommand install result=>', result)
       if (!result.code) {
         pkgNameList.forEach((pluginName: string) => {
           this.ctx.pluginLoader.registerPlugin(pluginName)
@@ -108,6 +109,7 @@ export class PluginHandler implements IPluginHandler {
       // uninstall plugins must use pkgNameList:
       // npm uninstall will use the package.json's name
       const result = await this.execCommand('uninstall', pkgNameList, this.ctx.baseDir)
+      console.log('execCommand uninstall result=>', result)
       if (!result.code) {
         pkgNameList.forEach((pluginName: string) => {
           this.ctx.pluginLoader.unregisterPlugin(pluginName)
@@ -160,6 +162,7 @@ export class PluginHandler implements IPluginHandler {
       // update plugins must use pkgNameList:
       // npm update will use the package.json's name
       const result = await this.execCommand('update', pkgNameList, this.ctx.baseDir, options, env)
+      console.log('execCommand update result=>', result)
       if (!result.code) {
         this.ctx.log.success(this.ctx.i18n.translate<ILocalesKey>('PLUGIN_HANDLER_PLUGIN_UPDATE_SUCCESS'))
         this.ctx.emit('updateSuccess', {
@@ -216,9 +219,9 @@ export class PluginHandler implements IPluginHandler {
       }
       try {
         const npmOptions = { cwd: where, env: Object.assign({}, process.env, env) }
-        console.log('Start run pnpm,args', args)
-        console.log('Start run pnpm,npmOptions', npmOptions)
-        const npm = spawn('pnpm', args, npmOptions)
+        console.log('Start run npm, args=>', args)
+        console.log('Start run pnpm, npmOptions=>', npmOptions)
+        const npm = spawn('npm', args, npmOptions)
 
         let output = ''
         npm.stdout?.on('data', (data: string) => {
