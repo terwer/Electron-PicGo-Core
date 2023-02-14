@@ -215,7 +215,10 @@ export class PluginHandler implements IPluginHandler {
         args = args.concat(`--proxy=${proxy}`)
       }
       try {
-        const npm = spawn('npm', args, { cwd: where, env: Object.assign({}, process.env, env) })
+        const npmOptions = { cwd: where, env: Object.assign({}, process.env, env) }
+        console.log('Start run pnpm,args', args)
+        console.log('Start run pnpm,npmOptions', npmOptions)
+        const npm = spawn('pnpm', args, npmOptions)
 
         let output = ''
         npm.stdout?.on('data', (data: string) => {
@@ -236,8 +239,8 @@ export class PluginHandler implements IPluginHandler {
         // for users who haven't installed node.js
         npm.on('error', (err: Error) => {
           this.ctx.log.error(err)
-          this.ctx.log.error('NPM is not installed')
-          this.ctx.emit(IBuildInEvent.FAILED, 'NPM is not installed')
+          this.ctx.log.error('PNPM is not installed')
+          this.ctx.emit(IBuildInEvent.FAILED, 'PNPM is not installed')
         })
       } catch (e) {
         this.ctx.log.error(e as Error)
