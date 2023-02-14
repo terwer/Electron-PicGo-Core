@@ -47,7 +47,7 @@
       "./node_modules/@picgo/bump-version/commitlint-picgo"
     ]
   },
-  "author": "Molunerfinn",
+  "author": "Terwer",
   "license": "MIT",
   "devDependencies": {
     "@picgo/bump-version": "^1.1.2",
@@ -124,7 +124,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PicGo/PicGo-Core.git"
+    "url": "git+https://github.com/terwer/ELectron-PicGo-Core.git"
   },
   "picBed": {
     "current": "github"
