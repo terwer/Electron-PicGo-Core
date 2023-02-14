@@ -1,6 +1,6 @@
 {
   "name": "electron-picgo",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "A tool for picture uploading",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -13,13 +13,13 @@
   },
   "scripts": {
     "start": "node ./bin/picgo",
-    "lint": "eslint src/**/*.ts && pnpm run build",
+    "lint": "eslint src/**/*.ts && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "cross-env NODE_ENV=production rimraf ./dist && rollup -c rollup.config.js",
     "dev": "cross-env NODE_ENV=development rollup -c rollup.config.js -w",
-    "patch": "pnpm version patch && git push origin master && git push origin --tags",
-    "minor": "pnpm version minor && git push origin master && git push origin --tags",
-    "major": "pnpm version major && git push origin master && git push origin --tags",
+    "patch": "npm version patch && git push origin master && git push origin --tags",
+    "minor": "npm version minor && git push origin master && git push origin --tags",
+    "major": "npm version major && git push origin master && git push origin --tags",
     "cz": "git-cz",
     "release": "bump-version"
   },
@@ -30,7 +30,7 @@
   ],
   "husky": {
     "hooks": {
-      "pre-commit": "pnpm run lint",
+      "pre-commit": "npm run lint",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
@@ -89,7 +89,7 @@
     "rollup": "^2.58.0",
     "rollup-plugin-string": "^3.0.0",
     "rollup-plugin-terser": "^7.0.2",
-    "rollup-plugin-typescript2": "^0.30.0",
+    "rollup-plugin-typescript2": "^0.34.1",
     "typescript": "^4.8.2"
   },
   "dependencies": {
