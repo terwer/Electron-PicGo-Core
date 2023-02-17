@@ -67,6 +67,7 @@ export class PluginLoader implements IPluginLoader {
       this.ctx.log.warn('Please provide valid plugin')
       return
     }
+    console.log('Start registering plugin ' + name + ' ...')
     this.fullList.add(name)
     try {
       // register local plugin
@@ -124,6 +125,10 @@ export class PluginLoader implements IPluginLoader {
       return this.pluginMap.get(name)
     }
     const pluginDir = path.join(this.ctx.baseDir, 'node_modules/')
+    console.log('Start requiring plugin lib,pluginDir', pluginDir)
+    console.log('Start requiring plugin lib,name', name)
+    // @ts-expect-error
+    console.warn(require === window.require)
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const plugin = require(pluginDir + name)(this.ctx)
     this.pluginMap.set(name, plugin)

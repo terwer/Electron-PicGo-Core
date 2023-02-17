@@ -20,7 +20,10 @@ export class PluginHandler implements IPluginHandler {
     this.ctx = ctx
   }
 
-  async install (plugins: string[], options: IPluginHandlerOptions = {}, env?: IProcessEnv): Promise<IPluginHandlerResult<boolean>> {
+  async install (plugins: string[], options?: IPluginHandlerOptions, env?: IProcessEnv): Promise<IPluginHandlerResult<boolean>> {
+    if (!options) {
+      options = {}
+    }
     const installedPlugins: string[] = []
     const processPlugins = plugins
       .map((item: string) => handlePluginNameProcess(this.ctx, item))
@@ -102,13 +105,16 @@ export class PluginHandler implements IPluginHandler {
     }
   }
 
-  async uninstall (plugins: string[]): Promise<IPluginHandlerResult<boolean>> {
+  async uninstall (plugins: string[], options?: IPluginHandlerOptions, env?: IProcessEnv): Promise<IPluginHandlerResult<boolean>> {
+    if (!options) {
+      options = {}
+    }
     const processPlugins = plugins.map((item: string) => handlePluginNameProcess(this.ctx, item)).filter(item => item.success)
     const pkgNameList = processPlugins.map(item => item.pkgName)
     if (pkgNameList.length > 0) {
       // uninstall plugins must use pkgNameList:
       // npm uninstall will use the package.json's name
-      const result = await this.execCommand('uninstall', pkgNameList, this.ctx.baseDir)
+      const result = await this.execCommand('uninstall', pkgNameList, this.ctx.baseDir, options, env)
       console.log('execCommand uninstall result=>', result)
       if (!result.code) {
         pkgNameList.forEach((pluginName: string) => {
@@ -155,7 +161,10 @@ export class PluginHandler implements IPluginHandler {
     }
   }
 
-  async update (plugins: string[], options: IPluginHandlerOptions = {}, env?: IProcessEnv): Promise<IPluginHandlerResult<boolean>> {
+  async update (plugins: string[], options?: IPluginHandlerOptions, env?: IProcessEnv): Promise<IPluginHandlerResult<boolean>> {
+    if (!options) {
+      options = {}
+    }
     const processPlugins = plugins.map((item: string) => handlePluginNameProcess(this.ctx, item)).filter(item => item.success)
     const pkgNameList = processPlugins.map(item => item.pkgName)
     if (pkgNameList.length > 0) {
